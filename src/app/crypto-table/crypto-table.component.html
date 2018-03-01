@@ -1,0 +1,34 @@
+<select (change)='changeFilter($event)'>
+  <option [selected]="DefaultFilter === 'ALL'">ALL</option>
+  <option [selected]="DefaultFilter === 'Positive'">Positive</option>
+  <option [selected]="DefaultFilter === 'Negative'">Negative</option>
+</select>
+<div class = 'table-responsive'>
+<table class="table table-sm table-hover" *ngIf='tableData'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Rank</th>
+      <th scope="col">Name</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">{{otherPirce !== 'USD' ? otherPirce : 'USD'}}</th>
+     <!-- <th scope="col">USD{{otherPirce !== 'USD' ? ' / ' + otherPirce : ''}}</th> -->
+      <th scope="col">Change</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let data of tableData | filter : DefaultFilter'>
+      <td>{{data.rank}}</td>
+      <td>{{data.name}}</td>
+      <td [routerLink]="['/chart']" [queryParams]="{ symbol: data.symbol, curr: otherPirce}" [ngStyle]="{color: 'blue' , cursor: 'pointer'}">{{data.symbol}}</td>
+      <td>{{data.other_price |  currency: otherPirce}}</td>
+     <!-- <td>{{ data.price_usd && (data.other_price !== data.price_usd) ? data.price_usd + ' / ' + data.other_price : data.price_usd}}</td> -->
+      <td>{{data.percent_change_24h}}</td>
+     </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- {{(data['price_' + otherPirce.toLowerCase()] !== data.price_usd) ? data.price_usd + ' / ' + data['price_' + otherPirce.toLowerCase()] : data.price_usd}} -->
+<!-- data.price_usd && (data.other_price !== data.price_usd) ? format(data.other_price)  : -->
+
